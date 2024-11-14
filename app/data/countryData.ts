@@ -1,0 +1,58 @@
+// data/countryData.ts
+
+export default [
+	{
+		code: "US",
+		name: "United States",
+		lat: 37.0902,
+		lng: -95.7129,
+		cases: 50000000,
+		deaths: 800000,
+		vaccinations: 300000000,
+	},
+	{
+		code: "CA",
+		name: "Canada",
+		lat: 56.1304,
+		lng: -106.3468,
+		cases: 2000000,
+		deaths: 30000,
+		vaccinations: 50000000,
+	},
+	{
+		code: "IN",
+		name: "India",
+		lat: 20.5937,
+		lng: 78.9629,
+		cases: 35000000,
+		deaths: 450000,
+		vaccinations: 1100000000,
+	},
+	{
+		code: "BR",
+		name: "Brazil",
+		lat: -14.235,
+		lng: -51.9253,
+		cases: 22000000,
+		deaths: 600000,
+		vaccinations: 150000000,
+	},
+	{
+		code: "FR",
+		name: "France",
+		lat: 46.6034,
+		lng: 1.8883,
+		cases: 10000000,
+		deaths: 150000,
+		vaccinations: 80000000,
+	},
+	{
+		code: "DE",
+		name: "Germany",
+		lat: 51.1657,
+		lng: 10.4515,
+		cases: 9000000,
+		deaths: 120000,
+		vaccinations: 70000000,
+	},
+];
