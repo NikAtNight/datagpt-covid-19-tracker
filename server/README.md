@@ -1,5 +1,6 @@
 ```
 bun install
+
 docker compose up
 ```
 

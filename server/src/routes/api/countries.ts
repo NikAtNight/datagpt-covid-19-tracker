@@ -18,7 +18,10 @@ countriesRoutes.get("/", async (c) => {
       ORDER BY location ASC
     `);
 
-    return c.json(result.rows);
+    return c.json({
+      status: "success",
+      items: result.rows,
+    });
   } catch (error) {
     console.error("Database error:", error);
     return c.json(
