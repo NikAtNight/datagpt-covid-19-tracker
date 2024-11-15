@@ -1,0 +1,13 @@
+{
+	"name": "covid-tracker",
+	"private": true,
+	"workspaces": [
+        "app",
+        "server",
+        "shared"
+	],
+	"scripts": {
+        "dev:app": "cd app && npm run dev",
+        "dev:server": "cd server && docker compose up"
+	}
+}
