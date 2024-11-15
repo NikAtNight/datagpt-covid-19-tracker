@@ -1,6 +1,8 @@
 ```
 bun install
 
+docker compose build
+
 docker compose up
 ```
 
@@ -20,6 +22,7 @@ grant all privileges on database covid_db to dbmaster;
 ### Run Scripts to Ingest Data
 
 ```bash
+bun run ingestLatest
 
 ```
 
