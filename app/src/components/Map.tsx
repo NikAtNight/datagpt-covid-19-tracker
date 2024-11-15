@@ -84,6 +84,8 @@ export default function Map({ countries, selectedCountry }: { countries: LatestC
 								<h3 className="font-bold">{country.location}</h3>
 								<p>Cases: {Number(country.total_cases).toLocaleString()}</p>
 								<p>Deaths: {Number(country.total_deaths).toLocaleString()}</p>
+								<p>Vaccinations: {Number(country.total_vaccinations).toLocaleString()}</p>
+								<p>Population: {Number(country.population).toLocaleString()}</p>
 							</div>
 						</Popup>
 					</Marker>
