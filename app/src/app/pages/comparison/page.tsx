@@ -11,6 +11,7 @@ import axios from "axios"
 import { DatePickerWithRange } from '~/components/DatePickerRange'
 import { DateRange } from 'react-day-picker'
 import { format } from 'date-fns'
+import { Inbox } from 'lucide-react'
 
 
 const chartTypes = ['Line', 'Bar', 'Scatter', 'Stacked Bar']
@@ -25,8 +26,8 @@ export default function Home() {
 	const [metric, setMetric] = useState<{ label: string; value: string } | null>(null)
 	const [data, setData] = useState<any[]>([])
 	const [dateRange, setDateRange] = useState<DateRange>({
-		from: new Date(2020, 0, 1),
-		to: new Date(2020, 11, 31),
+		from: undefined,
+		to: undefined,
 	})
 	const [chartType, setChartType] = useState<string>('Line')
 
@@ -64,6 +65,22 @@ export default function Home() {
 	}
 
 	const renderChart = () => {
+		if (!data || data.length === 0) {
+			return (
+				<div className="flex flex-col items-center justify-center h-[100%] gap-6">
+					<div className="flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full dark:bg-gray-800">
+						<Inbox className="w-10 h-10 text-gray-500 dark:text-gray-400" />
+					</div>
+					<div className="space-y-2 text-center">
+						<h2 className="text-2xl font-bold tracking-tight">No data to display</h2>
+						<p className="text-gray-500 dark:text-gray-400">
+							It looks like there's no data available for this date range.
+						</p>
+					</div>
+				</div>
+			);
+		}
+
 		const commonProps = {
 			data: data,
 		}
@@ -216,8 +233,8 @@ export default function Home() {
 						<DatePickerWithRange
 							date={dateRange}
 							setDate={(date) => setDateRange(date ?? {
-								from: new Date(2020, 0, 1),
-								to: new Date(2020, 11, 31),
+								from: undefined,
+								to: undefined,
 							})}
 						/>
 					</CardContent>
