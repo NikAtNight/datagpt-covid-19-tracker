@@ -12,7 +12,7 @@ const useGetCountriesStats = () => {
 };
 
 const useGetCountriesList = () => {
-	return useQuery("countries", async () => {
+	return useQuery("countries-list", async () => {
 		const { data } = await axios.get("/countries/list");
 		return data.items as string[];
 	});

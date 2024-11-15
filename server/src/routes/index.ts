@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import apiDocsRoute, { initApiDocs } from "./api/index.js";
-import covidRoutes from "./api/latest.js";
 import healthRoutes from "./api/health.js";
 import countriesRoutes from "./api/countries.js";
 export function registerRoutes(app: Hono) {
@@ -10,7 +9,6 @@ export function registerRoutes(app: Hono) {
 
   // Mount all API routes
   api.route("/", apiDocsRoute);
-  api.route("/covid", covidRoutes);
   api.route("/health", healthRoutes);
   api.route("/countries", countriesRoutes);
 

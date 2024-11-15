@@ -43,8 +43,6 @@ export default function Home() {
 		)
 	}
 
-	console.log(regions)
-
 	const filteredCountries = allCountries?.filter((country) =>
 		country.location.toLowerCase().includes(search.toLowerCase())
 	)

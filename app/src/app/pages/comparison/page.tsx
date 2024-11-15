@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { LineChart, Line, BarChart, Bar, ScatterChart, Scatter, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "~/components/ui/chart"
 import { useGetCountriesList } from "~/actions/countryHooks"
+
 const mockData = [
 	{ date: '2023-01-01', baseline: 100, comparison: 120 },
 	{ date: '2023-02-01', baseline: 150, comparison: 180 },
@@ -24,7 +25,7 @@ const chartTypes = ['Line', 'Bar', 'Scatter', 'Pie', 'Stacked Bar']
 
 const COLORS = ['var(--color-baseline)', 'var(--color-comparison)']
 
-export default function CovidTracker() {
+export default function Home() {
 	const [baselineCountry, setBaselineCountry] = useState('')
 	const [comparisonCountry, setComparisonCountry] = useState('')
 	const [metric, setMetric] = useState('')
