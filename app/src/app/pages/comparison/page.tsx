@@ -1,38 +1,49 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
 import { LineChart, Line, BarChart, Bar, ScatterChart, Scatter, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "~/components/ui/chart"
 import { useGetCountriesList } from "~/actions/countryHooks"
+import { metrics, dataSets, endpoints, DataSetLabel } from "~/lib/helper"
+import axios from "axios"
+import { DatePickerWithRange } from '~/components/DatePickerRange'
+import { DateRange } from 'react-day-picker'
+import { format } from 'date-fns'
 
-const mockData = [
-	{ date: '2023-01-01', baseline: 100, comparison: 120 },
-	{ date: '2023-02-01', baseline: 150, comparison: 180 },
-	{ date: '2023-03-01', baseline: 200, comparison: 220 },
-	{ date: '2023-04-01', baseline: 180, comparison: 200 },
-	{ date: '2023-05-01', baseline: 220, comparison: 250 },
-]
 
 const pieData = [
 	{ name: 'Baseline', value: 400 },
 	{ name: 'Comparison', value: 300 },
 ]
 
-const metrics = ['Total Cases', 'New Cases', 'Total Deaths', 'New Deaths', 'Vaccinations']
 const chartTypes = ['Line', 'Bar', 'Scatter', 'Pie', 'Stacked Bar']
 
 const COLORS = ['var(--color-baseline)', 'var(--color-comparison)']
 
 export default function Home() {
-	const [baselineCountry, setBaselineCountry] = useState('')
-	const [comparisonCountry, setComparisonCountry] = useState('')
-	const [metric, setMetric] = useState('')
+	const [baselineCountry, setBaselineCountry] = useState<string>('Canada')
+	const [comparisonCountry, setComparisonCountry] = useState<string>('')
+	const [dataSet, setDataSet] = useState<{ label: DataSetLabel; value: string }>({
+		label: "Case Deaths",
+		value: "covid_cases_deaths",
+	})
+	const [metric, setMetric] = useState<{ label: string; value: string } | null>(null)
 	const [data, setData] = useState<any[]>([])
-	const [chartType, setChartType] = useState('Line')
+	const [dateRange, setDateRange] = useState<DateRange>({
+		from: new Date(2020, 0, 1),
+		to: new Date(2020, 11, 31),
+	})
+	const [chartType, setChartType] = useState<string>('Line')
 
 	const { data: countries, isLoading: countriesLoading } = useGetCountriesList()
+
+	useEffect(() => {
+		if (metric && baselineCountry) {
+			handleCompare()
+		}
+	}, [baselineCountry, comparisonCountry, dateRange, metric])
 
 	if (countriesLoading || !countries) return (
 		<div className="flex flex-col justify-center items-center h-screen">
@@ -41,14 +52,30 @@ export default function Home() {
 	)
 
 	const handleCompare = () => {
-		console.log(`Comparing ${baselineCountry} with ${comparisonCountry} for ${metric}`)
-		setData(mockData)
+		if (!metric || !baselineCountry || !dateRange?.from || !dateRange?.to) return
+
+		const endpoint = endpoints[dataSet.label]
+
+		axios.get(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+			params: {
+				baseline_country: baselineCountry,
+				comparison_country: comparisonCountry,
+				metric: metric.value,
+				date_from: format(dateRange.from, 'yyyy-MM-dd'),
+				date_to: format(dateRange.to, 'yyyy-MM-dd'),
+			},
+		}).then((res) => {
+			console.log(res.data)
+			setData(res.data)
+		})
 	}
 
 	const renderChart = () => {
 		const commonProps = {
 			data: data,
 		}
+
+		const hasComparison = data.length > 0 && 'comparison' in data[0]
 
 		switch (chartType) {
 			case 'Bar':
@@ -60,7 +87,9 @@ export default function Home() {
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
 						<Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
-						<Bar dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+						{hasComparison &&
+							<Bar dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+						}
 					</BarChart>
 				)
 			case 'Scatter':
@@ -72,14 +101,16 @@ export default function Home() {
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
 						<Scatter dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
-						<Scatter dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+						{hasComparison &&
+							<Scatter dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+						}
 					</ScatterChart>
 				)
 			case 'Pie':
 				return (
 					<PieChart>
 						<Pie
-							data={pieData}
+							data={hasComparison ? pieData : [pieData[0]]}
 							cx="50%"
 							cy="50%"
 							labelLine={false}
@@ -87,7 +118,7 @@ export default function Home() {
 							fill="#8884d8"
 							dataKey="value"
 						>
-							{pieData.map((entry, index) => (
+							{(hasComparison ? pieData : [pieData[0]]).map((entry, index) => (
 								<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
 							))}
 						</Pie>
@@ -104,7 +135,9 @@ export default function Home() {
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
 						<Bar dataKey="baseline" stackId="a" fill="var(--color-baseline)" name="Baseline" />
-						<Bar dataKey="comparison" stackId="a" fill="var(--color-comparison)" name="Comparison" />
+						{hasComparison &&
+							<Bar dataKey="comparison" stackId="a" fill="var(--color-comparison)" name="Comparison" />
+						}
 					</BarChart>
 				)
 			default:
@@ -116,7 +149,9 @@ export default function Home() {
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
 						<Line type="monotone" dataKey="baseline" stroke="var(--color-baseline)" name="Baseline" />
-						<Line type="monotone" dataKey="comparison" stroke="var(--color-comparison)" name="Comparison" />
+						{hasComparison &&
+							<Line type="monotone" dataKey="comparison" stroke="var(--color-comparison)" name="Comparison" />
+						}
 					</LineChart>
 				)
 		}
@@ -133,9 +168,9 @@ export default function Home() {
 						<CardDescription>Select the baseline country for comparison</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<Select onValueChange={setBaselineCountry}>
-							<SelectTrigger>
-								<SelectValue placeholder="Select country" />
+						<Select onValueChange={setBaselineCountry} required defaultValue='Canada'>
+							<SelectTrigger className="required:border-red-500">
+								<SelectValue placeholder="Select country (required)" />
 							</SelectTrigger>
 							<SelectContent>
 								{countries.map((country) => (
@@ -165,28 +200,89 @@ export default function Home() {
 					</CardContent>
 				</Card>
 			</div>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+				<Card>
+					<CardHeader>
+						<CardTitle>Data Set</CardTitle>
+						<CardDescription>Select the data set to compare</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<Select
+							onValueChange={(value) => {
+								setDataSet(JSON.parse(value));
+								setMetric(null);
+							}}
+							defaultValue={JSON.stringify({
+								label: "Case Deaths",
+								value: "covid_cases_deaths",
+							})}
+							required
+						>
+							<SelectTrigger className="required:border-red-500">
+								<SelectValue placeholder="Select data set (required)" />
+							</SelectTrigger>
+							<SelectContent>
+								{dataSets.map((ds) => (
+									<SelectItem
+										key={ds.value}
+										value={JSON.stringify(ds)}
+									>
+										{ds.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader>
+						<CardTitle>Date Range</CardTitle>
+						<CardDescription>Choose the date range to compare</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<DatePickerWithRange
+							date={dateRange}
+							setDate={(date) => setDateRange(date ?? {
+								from: new Date(2020, 0, 1),
+								to: new Date(2020, 11, 31),
+							})}
+						/>
+					</CardContent>
+				</Card>
+			</div>
 
-			<Card className="mb-4">
-				<CardHeader>
-					<CardTitle>Metric Selection</CardTitle>
-					<CardDescription>Choose the metric to compare</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Select onValueChange={(value) => {
-						setMetric(value);
-						handleCompare();
-					}}>
-						<SelectTrigger>
-							<SelectValue placeholder="Select metric" />
-						</SelectTrigger>
-						<SelectContent>
-							{metrics.map((m) => (
-								<SelectItem key={m} value={m}>{m}</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-				</CardContent>
-			</Card>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 md:place-items-center">
+				<Card className="mb-4 md:col-span-2 w-full md:w-1/2">
+					<CardHeader>
+						<CardTitle>Metric Selection</CardTitle>
+						<CardDescription>Choose the metric to compare</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<Select
+							onValueChange={(value) => {
+								setMetric(value ? JSON.parse(value) : null);
+								handleCompare();
+							}}
+							value={metric ? JSON.stringify(metric) : undefined}
+							required
+						>
+							<SelectTrigger className="required:border-red-500">
+								<SelectValue placeholder="Select metric (required)" />
+							</SelectTrigger>
+							<SelectContent>
+								{metrics[dataSet?.label]?.map((m) => (
+									<SelectItem
+										key={m.value}
+										value={JSON.stringify(m)}
+									>
+										{m.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</CardContent>
+				</Card>
+			</div>
 
 			<Card>
 				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -205,7 +301,10 @@ export default function Home() {
 				<CardDescription className="px-6">
 					{baselineCountry && `Baseline: ${baselineCountry}`}
 					{comparisonCountry && ` | Comparison: ${comparisonCountry}`}
-					{metric && ` | Metric: ${metric}`}
+					{dataSet && ` | Data Set: ${dataSet.label}`}
+					{dateRange?.from && dateRange?.to &&
+						` | Date Range: ${format(dateRange.from, 'LLL dd, y')} - ${format(dateRange.to, 'LLL dd, y')}`}
+					{metric && ` | Metric: ${metric.label}`}
 				</CardDescription>
 				<CardContent>
 					<ChartContainer
