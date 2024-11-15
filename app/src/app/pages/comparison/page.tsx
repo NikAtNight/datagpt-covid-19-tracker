@@ -96,9 +96,9 @@ export default function Home() {
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
-						<Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
+						<Bar dataKey="baseline" fill="var(--color-baseline)" name={baselineCountry} />
 						{hasComparison &&
-							<Bar dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+							<Bar dataKey="comparison" fill="var(--color-comparison)" name={comparisonCountry} />
 						}
 					</BarChart>
 				)
@@ -110,9 +110,9 @@ export default function Home() {
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
-						<Scatter dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
+						<Scatter dataKey="baseline" fill="var(--color-baseline)" name={baselineCountry} />
 						{hasComparison &&
-							<Scatter dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
+							<Scatter dataKey="comparison" fill="var(--color-comparison)" name={comparisonCountry} />
 						}
 					</ScatterChart>
 				)
@@ -124,9 +124,9 @@ export default function Home() {
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
-						<Bar dataKey="baseline" stackId="a" fill="var(--color-baseline)" name="Baseline" />
+						<Bar dataKey="baseline" stackId="a" fill="var(--color-baseline)" name={baselineCountry} />
 						{hasComparison &&
-							<Bar dataKey="comparison" stackId="a" fill="var(--color-comparison)" name="Comparison" />
+							<Bar dataKey="comparison" stackId="a" fill="var(--color-comparison)" name={comparisonCountry} />
 						}
 					</BarChart>
 				)
@@ -138,9 +138,9 @@ export default function Home() {
 						<YAxis />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Legend />
-						<Line type="monotone" dataKey="baseline" stroke="var(--color-baseline)" name="Baseline" />
+						<Line type="monotone" dataKey="baseline" stroke="var(--color-baseline)" name={baselineCountry} />
 						{hasComparison &&
-							<Line type="monotone" dataKey="comparison" stroke="var(--color-comparison)" name="Comparison" />
+							<Line type="monotone" dataKey="comparison" stroke="var(--color-comparison)" name={comparisonCountry} />
 						}
 					</LineChart>
 				)
@@ -241,38 +241,36 @@ export default function Home() {
 				</Card>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 md:place-items-center">
-				<Card className="mb-4 md:col-span-2 w-full md:w-1/2">
-					<CardHeader>
-						<CardTitle>Metric Selection</CardTitle>
-						<CardDescription>Choose the metric to compare</CardDescription>
-					</CardHeader>
-					<CardContent>
-						<Select
-							onValueChange={(value) => {
-								setMetric(value ? JSON.parse(value) : null);
-								handleCompare();
-							}}
-							value={metric ? JSON.stringify(metric) : undefined}
-							required
-						>
-							<SelectTrigger className="required:border-red-500">
-								<SelectValue placeholder="Select metric (required)" />
-							</SelectTrigger>
-							<SelectContent>
-								{metrics[dataSet?.label]?.map((m) => (
-									<SelectItem
-										key={m.value}
-										value={JSON.stringify(m)}
-									>
-										{m.label}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</CardContent>
-				</Card>
-			</div>
+			<Card className="mb-4">
+				<CardHeader>
+					<CardTitle>Metric Selection</CardTitle>
+					<CardDescription>Choose the metric to compare</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Select
+						onValueChange={(value) => {
+							setMetric(value ? JSON.parse(value) : null);
+							handleCompare();
+						}}
+						value={metric ? JSON.stringify(metric) : undefined}
+						required
+					>
+						<SelectTrigger className="required:border-red-500">
+							<SelectValue placeholder="Select metric (required)" />
+						</SelectTrigger>
+						<SelectContent>
+							{metrics[dataSet?.label]?.map((m) => (
+								<SelectItem
+									key={m.value}
+									value={JSON.stringify(m)}
+								>
+									{m.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</CardContent>
+			</Card>
 
 			<Card>
 				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
