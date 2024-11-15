@@ -24,12 +24,12 @@ const RegionCard = ({ region }: { region: LatestCovidByCountry }) => {
 					<div className="flex flex-col">
 						<span className="text-sm font-medium text-muted-foreground">Total Cases</span>
 						<span className="text-xl font-bold">{formatNumber(region.total_cases)}</span>
-						<span className="text-sm text-muted-foreground">{casesPerMillion} per million</span>
+						<span className="text-sm text-muted-foreground">{parseFloat(casesPerMillion).toLocaleString()} per million</span>
 					</div>
 					<div className="flex flex-col">
 						<span className="text-sm font-medium text-muted-foreground">Total Deaths</span>
 						<span className="text-xl font-bold">{formatNumber(region.total_deaths)}</span>
-						<span className="text-sm text-muted-foreground">{deathsPerMillion} per million</span>
+						<span className="text-sm text-muted-foreground">{parseFloat(deathsPerMillion).toLocaleString()} per million</span>
 					</div>
 					<div className="flex flex-col">
 						<span className="text-sm font-medium text-muted-foreground">Vaccinations</span>

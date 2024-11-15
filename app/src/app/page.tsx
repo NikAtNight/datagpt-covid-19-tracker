@@ -63,7 +63,6 @@ export default function Home() {
 
 	return (
 		<div className="flex h-screen overflow-hidden">
-			{/* Sidebar */}
 			<Card className="w-80 flex-shrink-0 rounded-none border-r">
 				<CardContent className="p-4 h-full flex flex-col gap-4">
 					<Input
@@ -91,13 +90,11 @@ export default function Home() {
 				</CardContent>
 			</Card>
 
-			{/* Main Content */}
 			<div className="flex-1 flex flex-col min-w-0">
 				<div className="flex-shrink-0 p-6 pb-2">
 					<h1 className="text-2xl font-bold">COVID-19 Tracker</h1>
 				</div>
 
-				{/* Map Container */}
 				<div className="flex-1 px-6 min-h-[400px]">
 					{countries && (
 						<div className="w-full h-full rounded-lg border overflow-hidden">
@@ -106,7 +103,6 @@ export default function Home() {
 					)}
 				</div>
 
-				{/* Tabs Section */}
 				<div className="flex-shrink-0 p-6 pt-4">
 					<Tabs defaultValue="continents" className="w-full">
 						<TabsList className="grid w-full grid-cols-3">

@@ -3,10 +3,11 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Circle } from 'lucide-react'
 import { countryCoordinates } from '~/lib/countryCoordinates'
+import { LatestCovidByCountry } from '~covid/models/countries'
 
 // Fix for default marker icon
 const createCustomIcon = (color: string) => {
@@ -22,7 +23,7 @@ const createCustomIcon = (color: string) => {
 }
 
 // Component to handle map zooming and centering
-function MapViewHandler({ selectedCountry }: { selectedCountry: any }) {
+function MapViewHandler({ selectedCountry }: { selectedCountry: LatestCovidByCountry | null }) {
 	const map = useMap()
 
 	useEffect(() => {
@@ -36,8 +37,8 @@ function MapViewHandler({ selectedCountry }: { selectedCountry: any }) {
 	return null
 }
 
-export default function Map({ countries, selectedCountry }: { countries: any, selectedCountry: any }) {
-	const [map, setMap] = useState<L.Map | null>(null)
+export default function Map({ countries, selectedCountry }: { countries: LatestCovidByCountry[], selectedCountry: LatestCovidByCountry | null }) {
+	const map = useRef<L.Map | null>(null)
 	const selectedCountryFull = selectedCountry
 		? { ...selectedCountry, ...countryCoordinates[selectedCountry.iso_code] }
 		: null
@@ -45,8 +46,8 @@ export default function Map({ countries, selectedCountry }: { countries: any, se
 
 	useEffect(() => {
 		return () => {
-			if (map) {
-				map.remove()
+			if (map.current) {
+				map.current?.remove()
 			}
 		}
 	}, [map])
@@ -59,7 +60,7 @@ export default function Map({ countries, selectedCountry }: { countries: any, se
 			center={selectedCountryFull ? [selectedCountryFull.lat, selectedCountryFull.lng] : [20, 0]}
 			zoom={selectedCountry ? 4 : 2}
 			scrollWheelZoom={false}
-			ref={(map) => setMap(map as L.Map)}
+			ref={map}
 		>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
