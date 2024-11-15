@@ -27,7 +27,7 @@ vaccinationsRoutes.get("/", async (c) => {
 				${metric} as value,
 				location
 			FROM covid_vaccinations
-			WHERE location = $1
+			WHERE (location = $1
 		`;
 
 		const params = [baseline_country];
@@ -37,7 +37,7 @@ vaccinationsRoutes.get("/", async (c) => {
 			params.push(comparison_country);
 		}
 
-		query += ` AND date BETWEEN $${params.length + 1} AND $${params.length + 2}`;
+		query += `) AND date BETWEEN $${params.length + 1} AND $${params.length + 2}`;
 		params.push(date_from, date_to);
 
 		query += ` ORDER BY date ASC`;

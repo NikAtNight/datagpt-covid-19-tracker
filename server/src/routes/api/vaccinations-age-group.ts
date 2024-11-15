@@ -28,16 +28,18 @@ vaccinationsByAgeRoutes.get("/", async (c) => {
                 location,
                 age_group
             FROM covid_vaccinations_by_age
-            WHERE location = $1
-                AND date BETWEEN $2 AND $3
+            WHERE (location = $1
         `;
 
-		const params = [baseline_country, date_from, date_to];
+		const params = [baseline_country];
 
 		if (comparison_country) {
-			query += ` OR location = $4`;
+			query += ` OR location = $${params.length + 1}`;
 			params.push(comparison_country);
 		}
+
+		query += `) AND date BETWEEN $${params.length + 1} AND $${params.length + 2}`;
+		params.push(date_from, date_to);
 
 		query += ` ORDER BY date ASC`;
 

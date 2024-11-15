@@ -27,17 +27,18 @@ vaccinationsByManufacturerRoutes.get("/", async (c) => {
                 total_vaccinations as value,
                 location
             FROM covid_vaccinations_by_manufacturer
-            WHERE location = $1
-                AND date BETWEEN $2 AND $3
-                AND vaccine = $4
+            WHERE (location = $1 AND vaccine = $2
         `;
 
-		const params = [baseline_country, date_from, date_to, metric];
+		const params = [baseline_country, metric];
 
 		if (comparison_country) {
-			query += ` OR (location = $5 AND vaccine = $4)`;
+			query += ` OR (location = $${params.length + 1} AND vaccine = $2)`;
 			params.push(comparison_country);
 		}
+
+		query += `) AND date BETWEEN $${params.length + 1} AND $${params.length + 2}`;
+		params.push(date_from, date_to);
 
 		query += ` ORDER BY date ASC`;
 
