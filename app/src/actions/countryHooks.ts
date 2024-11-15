@@ -11,4 +11,11 @@ const useGetCountriesStats = () => {
 	});
 };
 
-export { useGetCountriesStats };
+const useGetCountriesList = () => {
+	return useQuery("countries", async () => {
+		const { data } = await axios.get("/countries/list");
+		return data.items as string[];
+	});
+};
+
+export { useGetCountriesStats, useGetCountriesList };

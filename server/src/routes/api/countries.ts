@@ -43,9 +43,11 @@ countriesRoutes.get("/list", async (c) => {
     `
     );
 
+    const mappedResults = result.rows.map((row) => row.location);
+
     return c.json({
       status: "success",
-      items: result.rows,
+      items: mappedResults,
     });
   } catch (error) {
     console.error("Database error:", error);
