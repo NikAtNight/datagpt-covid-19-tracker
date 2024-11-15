@@ -15,12 +15,12 @@ export default function Header() {
 
 	return (
 		<header className="border-b">
-			<nav className="mx-auto flex max-w-7xl items-center p-4">
+			<nav className="mx-auto flex items-center p-4">
 				<div className="relative flex w-full items-center">
 					<Link href="/" className="absolute left-0 flex items-center gap-2">
 						<Image
 							src="/logo.svg"
-							alt="COVID-19 Tracker Logo"
+							alt="datagpt logo"
 							width={150}
 							height={32}
 						/>
