@@ -28,10 +28,10 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!countries) return
-		const with_owid = countries.filter((country: LatestCovidByCountry) => country.iso_code.includes('OWID'))
+		const with_owid = countries.filter((country) => country.iso_code.includes('OWID'))
 		setRegions(with_owid)
 
-		const without_owid = countries.filter((country: LatestCovidByCountry) => !country.iso_code.includes('OWID'))
+		const without_owid = countries.filter((country) => !country.iso_code.includes('OWID'))
 		setAllCountries(without_owid)
 	}, [countries])
 
@@ -45,7 +45,7 @@ export default function Home() {
 
 	console.log(regions)
 
-	const filteredCountries = allCountries?.filter((country: any) =>
+	const filteredCountries = allCountries?.filter((country) =>
 		country.location.toLowerCase().includes(search.toLowerCase())
 	)
 
@@ -73,7 +73,7 @@ export default function Home() {
 					/>
 					<div className="overflow-y-auto flex-1 -mx-2">
 						<ul className="space-y-1 px-2">
-							{filteredCountries?.map((country: any) => (
+							{filteredCountries?.map((country) => (
 								<li
 									key={country.iso_code}
 									className={`cursor-pointer p-2 rounded-md transition-colors ${selectedCountry === country

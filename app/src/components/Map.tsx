@@ -66,7 +66,7 @@ export default function Map({ countries, selectedCountry }: { countries: LatestC
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
-			{countries.map((country: any) => {
+			{countries.map((country) => {
 				const coordinates = countryCoordinates[country.iso_code]
 				if (!coordinates) return null
 				return (
