@@ -23,7 +23,13 @@ grant all privileges on database covid_db to dbmaster;
 
 ```bash
 bun run ingestLatest
-
+bun run ingestCasesDeaths
+bun run ingestExcessMortality
+bun run ingestHospitalizations
+bun run ingestJHU
+bun run ingestVaccinations
+bun run ingestVaccinationsByManufacturer
+bun run ingestVaccinationsByAge
 ```
 
 open http://localhost:8000

@@ -3,7 +3,14 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "ingestLatest": "tsx src/scripts/ingestLatest.ts"
+    "ingestLatest": "tsx src/scripts/ingestLatest.ts",
+    "ingestCasesDeaths": "tsx src/scripts/ingestCasesDeaths.ts",
+    "ingestExcessMortality": "tsx src/scripts/ingestExcessMortality.ts",
+    "ingestHospitalizations": "tsx src/scripts/ingestHospitalizations.ts",
+    "ingestJHU": "tsx src/scripts/ingestJHU.ts",
+    "ingestVaccinations": "tsx src/scripts/ingestVaccinations.ts",
+    "ingestVaccinationsByManufacturer": "tsx src/scripts/ingestVaccinationsByManufacturer.ts",
+    "ingestVaccinationsByAge": "tsx src/scripts/ingestVaccinationsByAge.ts"
   },
   "dependencies": {
     "@covid/shared": "file:../shared",
