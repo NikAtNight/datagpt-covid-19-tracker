@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
-import { LineChart, Line, BarChart, Bar, ScatterChart, Scatter, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, BarChart, Bar, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "~/components/ui/chart"
 import { useGetCountriesList } from "~/actions/countryHooks"
 import { metrics, dataSets, endpoints, DataSetLabel } from "~/lib/helper"
@@ -13,14 +13,7 @@ import { DateRange } from 'react-day-picker'
 import { format } from 'date-fns'
 
 
-const pieData = [
-	{ name: 'Baseline', value: 400 },
-	{ name: 'Comparison', value: 300 },
-]
-
-const chartTypes = ['Line', 'Bar', 'Scatter', 'Pie', 'Stacked Bar']
-
-const COLORS = ['var(--color-baseline)', 'var(--color-comparison)']
+const chartTypes = ['Line', 'Bar', 'Scatter', 'Stacked Bar']
 
 export default function Home() {
 	const [baselineCountry, setBaselineCountry] = useState<string>('Canada')
@@ -105,26 +98,6 @@ export default function Home() {
 							<Scatter dataKey="comparison" fill="var(--color-comparison)" name="Comparison" />
 						}
 					</ScatterChart>
-				)
-			case 'Pie':
-				return (
-					<PieChart>
-						<Pie
-							data={hasComparison ? pieData : [pieData[0]]}
-							cx="50%"
-							cy="50%"
-							labelLine={false}
-							outerRadius={80}
-							fill="#8884d8"
-							dataKey="value"
-						>
-							{(hasComparison ? pieData : [pieData[0]]).map((entry, index) => (
-								<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-							))}
-						</Pie>
-						<ChartTooltip content={<ChartTooltipContent />} />
-						<Legend />
-					</PieChart>
 				)
 			case 'Stacked Bar':
 				return (
