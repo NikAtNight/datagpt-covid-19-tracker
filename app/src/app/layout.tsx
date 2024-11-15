@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Providers from "~/components/Providers";
+import Header from "~/components/Header";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -15,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: "DataGPT Covid-19 Tracker",
+	title: "DataGPT - Covid-19 Tracker",
 	description: "DataGPT Covid-19 Tracker",
 };
 
@@ -28,6 +29,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<Providers>
+					<Header />
 					{children}
 				</Providers>
 			</body>
