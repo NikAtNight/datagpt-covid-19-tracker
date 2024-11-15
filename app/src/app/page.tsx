@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Input } from '~/components/ui/input'
 import { Card, CardContent } from '~/components/ui/card'
-import { useGetCountries } from '~/actions/mainHooks'
+import { useGetCountriesStats } from '~/actions/countryHooks'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import { Globe2, TrendingUp, Users } from 'lucide-react'
 import RegionCard from '~/components/Region'
@@ -24,7 +24,7 @@ export default function Home() {
 	const [selectedCountry, setSelectedCountry] = useState<LatestCovidByCountry | null>(null)
 	const [regions, setRegions] = useState<LatestCovidByCountry[]>([])
 	const [allCountries, setAllCountries] = useState<LatestCovidByCountry[]>([])
-	const { data: countries, isLoading } = useGetCountries()
+	const { data: countries, isLoading } = useGetCountriesStats()
 
 	useEffect(() => {
 		if (!countries) return

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@covid/shared": "file:../shared",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
@@ -21,6 +23,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-leaflet": "5.0.0-rc.1",
     "react-query": "^3.39.3",
+    "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
@@ -34,5 +37,8 @@
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "react-is": "^19.0.0-rc-69d4b800-20241021"
   }
 }

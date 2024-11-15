@@ -34,40 +34,25 @@ countriesRoutes.get("/", async (c) => {
   }
 });
 
-// Get specific country by ISO code
-countriesRoutes.get("/:code", async (c) => {
-  const code = c.req.param("code");
-
+countriesRoutes.get("/list", async (c) => {
   try {
     const result = await pool.query(
       `
-      SELECT *
+      SELECT location
       FROM covid_latest
-      WHERE iso_code = $1
-    `,
-      [code.toUpperCase()]
+    `
     );
-
-    if (result.rows.length === 0) {
-      return c.json(
-        {
-          status: "error",
-          message: "Country not found",
-        },
-        404
-      );
-    }
 
     return c.json({
       status: "success",
-      data: result.rows[0],
+      items: result.rows,
     });
   } catch (error) {
     console.error("Database error:", error);
     return c.json(
       {
         status: "error",
-        message: "Failed to fetch country data",
+        message: "Failed to fetch countries data",
       },
       500
     );

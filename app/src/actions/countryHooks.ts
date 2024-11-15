@@ -4,11 +4,11 @@ import { LatestCovidByCountry } from "~covid/models/countries";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-const useGetCountries = () => {
+const useGetCountriesStats = () => {
 	return useQuery("countries", async () => {
 		const { data } = await axios.get("/countries");
 		return data.items as LatestCovidByCountry[];
 	});
 };
 
-export { useGetCountries };
+export { useGetCountriesStats };
