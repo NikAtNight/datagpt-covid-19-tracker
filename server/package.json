@@ -6,7 +6,6 @@
     "ingestLatest": "tsx src/scripts/ingestLatest.ts",
     "ingestCasesDeaths": "tsx src/scripts/ingestCasesDeaths.ts",
     "ingestExcessMortality": "tsx src/scripts/ingestExcessMortality.ts",
-    "ingestHospitalizations": "tsx src/scripts/ingestHospitalizations.ts",
     "ingestJHU": "tsx src/scripts/ingestJHU.ts",
     "ingestVaccinations": "tsx src/scripts/ingestVaccinations.ts",
     "ingestVaccinationsByManufacturer": "tsx src/scripts/ingestVaccinationsByManufacturer.ts",
